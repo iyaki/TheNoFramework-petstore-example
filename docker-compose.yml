@@ -1,0 +1,25 @@
+###############################################################################
+#                          Generated on phpdocker.io                          #
+###############################################################################
+version: "3.1"
+services:
+
+    webserver:
+      image: nginx:alpine
+      container_name: the-no-framework-petstore-webserver
+      working_dir: /application
+      volumes:
+        - ./phpdocker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      ports:
+        - "8080:80"
+
+    php-fpm:
+      build: phpdocker/php-fpm
+      container_name: the-no-framework-petstore-php-fpm
+      working_dir: /application
+      environment:
+        - SERVICE_CONTAINER_WRAPPER=/application/config/container.php
+        # - AUTOLOAD_PATH=/application/vendor/autoload.php
+      volumes:
+        - .:/application
+        - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini
