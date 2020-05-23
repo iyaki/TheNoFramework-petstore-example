@@ -15,7 +15,7 @@ final class PetService
 
     public function findBy(string $name = null, string $status = null): array
     {
-        return $this->petRepository->findBy(fn(Pet $pet) => (
+        return $this->petRepository->findBy(fn (Pet $pet) => (
             (null !== $name && $pet->getName() === $name)
             || (null !== $status && $pet->getStatus() === $status)
             || (null === $name && null === $status)
@@ -31,6 +31,18 @@ final class PetService
     {
         $pet = new Pet($name, $status);
         $this->petRepository->add($pet);
+        return $pet;
+    }
+
+    public function edit(int $id, string $name, string $status): Pet
+    {
+        $pet = $this->petRepository->find($id);
+        if (null === $pet) {
+            throw new \Exception('Pet does not exist');
+        }
+        $pet->setName($name);
+        $pet->setStatus($status);
+
         return $pet;
     }
 }

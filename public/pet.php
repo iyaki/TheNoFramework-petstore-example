@@ -72,18 +72,28 @@ final class PetController implements RequestHandlerInterface
         try {
             $newPet = $this->petService->create($requestBody->name, $requestBody->status);
             $response->getBody()->write((string) new PetJsonSerialized($newPet));
-        } catch (\Throwable $exception) {
+        } catch (\Exception $exception) {
             $response = $response->withStatus('400');
             $response->getBody()->write($exception->getMessage());
         }
-
         return $response;
     }
 
     private function put(ServerRequestInterface $request): ResponseInterface
     {
+        $requestBody = json_decode((string) $request->getBody());
         $response = new Response();
-        $response->getBody()->write('Test'.$request->getMethod());
+        try {
+            $pet = $this->petService->edit(
+                $requestBody->id,
+                $requestBody->name,
+                $requestBody->status
+            );
+            $response->getBody()->write((string) new PetJsonSerialized($pet));
+        } catch (\Exception $exception) {
+            $response = $response->withStatus('400');
+            $response->getBody()->write($exception->getMessage());
+        }
         return $response;
     }
 
