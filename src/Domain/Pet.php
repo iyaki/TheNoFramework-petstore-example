@@ -8,8 +8,6 @@ final class Pet
 {
     public const STATUS_AVAILABLE = 'available';
 
-    public const STATUS_PENDING = 'pending';
-
     public const STATUS_SOLD = 'sold';
 
     private int $id;
@@ -18,11 +16,11 @@ final class Pet
 
     private string $status;
 
-    public function __construct(string $name, string $status)
+    public function __construct(string $name)
     {
-        $this->name = $name;
-        $this->setStatus($status);
         $this->id = time();
+        $this->name = $name;
+        $this->status = self::STATUS_AVAILABLE;
     }
 
     public function getId(): int
@@ -45,15 +43,13 @@ final class Pet
         return $this->status;
     }
 
-    public function setStatus(string $status): void
+    public function reserve(): void
     {
-        if (
-            self::STATUS_AVAILABLE !== $status
-            && self::STATUS_PENDING !== $status
-            && self::STATUS_SOLD !== $status
-        ) {
-            throw new \Exception('Invalid status. Posible status are: '.self::STATUS_AVAILABLE.', '.self::STATUS_PENDING.' and '.self::STATUS_SOLD.'.');
-        }
-        $this->status = $status;
+        $this->status = self::STATUS_SOLD;
+    }
+
+    public function cancelReservation(): void
+    {
+        $this->status = self::STATUS_AVAILABLE;
     }
 }

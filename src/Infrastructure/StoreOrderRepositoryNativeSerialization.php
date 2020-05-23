@@ -4,14 +4,14 @@ declare(strict_types = 1);
 
 namespace TheNoFrameworkPetstore\Infrastructure;
 
-use TheNoFrameworkPetstore\Domain\Pet;
-use TheNoFrameworkPetstore\Domain\PetRepositoryInterface;
+use TheNoFrameworkPetstore\Domain\StoreOrder;
+use TheNoFrameworkPetstore\Domain\StoreOrderRepositoryInterface;
 
-final class PetRepositoryNativeSerialization implements PetRepositoryInterface
+final class StoreOrderRepositoryNativeSerialization implements StoreOrderRepositoryInterface
 {
     private string $storeFile;
 
-    private array $pets = [];
+    private array $storeOrders = [];
 
     public function __construct(string $storeFile)
     {
@@ -28,31 +28,26 @@ final class PetRepositoryNativeSerialization implements PetRepositoryInterface
         if (!is_array($fileData)) {
             throw new \Exception("Error unserializing the data from: {$this->storeFile}");
         }
-        $this->pets = $fileData;
+        $this->storeOrders = $fileData;
     }
 
     public function __destruct()
     {
-        file_put_contents($this->storeFile, serialize($this->pets));
+        file_put_contents($this->storeFile, serialize($this->storeOrders));
     }
 
-    public function add(Pet $pet): void
+    public function add(StoreOrder $storeOrder): void
     {
-        $this->pets[$pet->getId()] = $pet;
+        $this->storeOrders[$storeOrder->getId()] = $storeOrder;
     }
 
-    public function findBy(callable $strategy): array
+    public function find(int $id): ?StoreOrder
     {
-        return array_values(array_filter($this->pets, $strategy));
+        return $this->storeOrders[$id] ?? null;
     }
 
-    public function find(int $id): ?Pet
+    public function remove(StoreOrder $storeOrder): void
     {
-        return $this->pets[$id] ?? null;
-    }
-
-    public function remove(Pet $pet): void
-    {
-        unset($this->pets[$pet->getId()]);
+        unset($this->storeOrders[$storeOrder->getId()]);
     }
 }

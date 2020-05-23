@@ -70,7 +70,7 @@ final class PetController implements RequestHandlerInterface
         $requestBody = json_decode((string) $request->getBody());
         $response = new Response();
         try {
-            $newPet = $this->petService->create($requestBody->name, $requestBody->status);
+            $newPet = $this->petService->create($requestBody->name);
             $response->getBody()->write((string) new PetJsonSerialized($newPet));
         } catch (\Exception $exception) {
             $response = $response->withStatus('400');
@@ -86,8 +86,7 @@ final class PetController implements RequestHandlerInterface
         try {
             $pet = $this->petService->edit(
                 $requestBody->id,
-                $requestBody->name,
-                $requestBody->status
+                $requestBody->name
             );
             $response->getBody()->write((string) new PetJsonSerialized($pet));
         } catch (\Exception $exception) {

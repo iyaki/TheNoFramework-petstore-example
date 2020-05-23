@@ -27,21 +27,20 @@ final class PetService
         return $this->petRepository->find($id);
     }
 
-    public function create(string $name, string $status): Pet
+    public function create(string $name): Pet
     {
-        $pet = new Pet($name, $status);
+        $pet = new Pet($name);
         $this->petRepository->add($pet);
         return $pet;
     }
 
-    public function edit(int $id, string $name, string $status): Pet
+    public function edit(int $id, string $name): Pet
     {
         $pet = $this->petRepository->find($id);
         if (null === $pet) {
             throw new \Exception('Pet does not exist');
         }
         $pet->setName($name);
-        $pet->setStatus($status);
 
         return $pet;
     }
