@@ -11,4 +11,6 @@ interface PetRepositoryInterface
     public function findBy(callable $strategy): array;
 
     public function find(int $id): ?Pet;
+
+    public function remove(Pet $pet): void;
 }

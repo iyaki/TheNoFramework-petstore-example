@@ -99,8 +99,22 @@ final class PetController implements RequestHandlerInterface
 
     private function delete(ServerRequestInterface $request): ResponseInterface
     {
+        $searchSegment = explode('/', $request->getUri()->getPath())[2] ?? null;
         $response = new Response();
-        $response->getBody()->write('Test'.$request->getMethod());
+        try {
+            if (!is_numeric($searchSegment)) {
+                throw new HttpException('Invalid Request', 400);
+            }
+            try {
+                $this->petService->remove((int) $searchSegment);
+            } catch (\Exception $e) {
+                throw new HttpException($e->getMessage(), 404);
+            }
+
+        } catch (HttpException $exception) {
+            $response = $response->withStatus(0 === $exception->getCode() ? 500 : $exception->getCode());
+            $response->getBody()->write($exception->getMessage());
+        }
         return $response;
     }
 

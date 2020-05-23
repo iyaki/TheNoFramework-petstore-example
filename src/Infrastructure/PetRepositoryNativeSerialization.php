@@ -50,4 +50,9 @@ final class PetRepositoryNativeSerialization implements PetRepositoryInterface
     {
         return $this->pets[$id] ?? null;
     }
+
+    public function remove(Pet $pet): void
+    {
+        unset($this->pets[$pet->getId()]);
+    }
 }

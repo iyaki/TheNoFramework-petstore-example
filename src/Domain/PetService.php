@@ -45,4 +45,13 @@ final class PetService
 
         return $pet;
     }
+
+    public function remove(int $id): void
+    {
+        $pet = $this->petRepository->find($id);
+        if (null === $pet) {
+            throw new \Exception('Pet does not exist');
+        }
+        $this->petRepository->remove($pet);
+    }
 }
