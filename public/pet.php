@@ -7,7 +7,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TheNoFramework\ApplicationWrapper;
+use TheNoFrameworkPetstore\Application\HttpException;
 use TheNoFrameworkPetstore\Domain\PetService;
+use TheNoFrameworkPetstore\Presentation\PetJsonSerialized;
 
 final class PetController implements RequestHandlerInterface
 {
@@ -35,8 +37,31 @@ final class PetController implements RequestHandlerInterface
 
     private function get(ServerRequestInterface $request): ResponseInterface
     {
+        $searchSegment = explode('/', $request->getUri()->getPath())[2] ?? null;
         $response = new Response();
-        $response->getBody()->write('Test1'.$request->getMethod());
+        try {
+            if (!is_numeric($searchSegment) && 'findByStatus' !== $searchSegment) {
+                throw new HttpException('Invalid Request', 400);
+            }
+            if (is_numeric($searchSegment)) {
+                $pet = $this->petService->find((int) $searchSegment);
+                if (null === $pet) {
+                    throw new HttpException('Pet not found', 404);
+                }
+                $response->getBody()->write((string) new PetJsonSerialized($pet));
+            }
+            if ('findByStatus' === $searchSegment) {
+                $status = $request->getQueryParams()['status'] ?? null;
+                if (null === $status) {
+                    throw new HttpException('Invalid Request', 400);
+                }
+                $pets = $this->petService->findBy(null, $status);
+                $response->getBody()->write((string) new PetJsonSerialized($pets));
+            }
+        } catch (HttpException $exception) {
+            $response = $response->withStatus(0 === $exception->getCode() ? 500 : $exception->getCode());
+            $response->getBody()->write($exception->getMessage());
+        }
         return $response;
     }
 
@@ -46,13 +71,7 @@ final class PetController implements RequestHandlerInterface
         $response = new Response();
         try {
             $newPet = $this->petService->create($requestBody->name, $requestBody->status);
-            $response->getBody()->write(
-                json_encode([
-                    'id' => $newPet->getId(),
-                    'name' => $newPet->getName(),
-                    'status' => $newPet->getStatus()
-                ])
-            );
+            $response->getBody()->write((string) new PetJsonSerialized($newPet));
         } catch (\Throwable $exception) {
             $response = $response->withStatus('400');
             $response->getBody()->write($exception->getMessage());

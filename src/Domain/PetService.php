@@ -13,9 +13,18 @@ final class PetService
         $this->petRepository = $petRepository;
     }
 
-    public function find(): array
+    public function findBy(string $name = null, string $status = null): array
     {
-        return [];
+        return $this->petRepository->findBy(fn(Pet $pet) => (
+            (null !== $name && $pet->getName() === $name)
+            || (null !== $status && $pet->getStatus() === $status)
+            || (null === $name && null === $status)
+        ));
+    }
+
+    public function find(int $id): ?Pet
+    {
+        return $this->petRepository->find($id);
     }
 
     public function create(string $name, string $status): Pet

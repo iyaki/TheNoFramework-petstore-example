@@ -43,6 +43,11 @@ final class PetRepositoryNativeSerialization implements PetRepositoryInterface
 
     public function findBy(callable $strategy): array
     {
-        return array_filter($this->pets, $strategy);
+        return array_values(array_filter($this->pets, $strategy));
+    }
+
+    public function find(int $id): ?Pet
+    {
+        return $this->pets[$id] ?? null;
     }
 }
