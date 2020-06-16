@@ -2,6 +2,7 @@
 
 declare(strict_types = 1);
 
+use TheNoFrameworkPetstore\Application\AuthMiddleware;
 use TheNoFrameworkPetstore\Domain\PetRepositoryInterface;
 use TheNoFrameworkPetstore\Domain\PetService;
 use TheNoFrameworkPetstore\Domain\StoreOrderRepositoryInterface;
@@ -21,5 +22,7 @@ $container->add(StoreOrderService::class)
     ->addArgument(PetService::class)
 ;
 $container->add(StoreOrderRepositoryInterface::class, StoreOrderRepositoryNativeSerialization::class)->addArgument('/application/storage/store_order.serialized');
+
+$container->add(AuthMiddleware::class);
 
 return $container;

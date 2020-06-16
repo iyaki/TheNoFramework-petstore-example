@@ -7,6 +7,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TheNoFramework\ApplicationWrapper;
+use TheNoFrameworkPetstore\Application\AuthMiddleware;
 use TheNoFrameworkPetstore\Application\HttpException;
 use TheNoFrameworkPetstore\Domain\StoreOrderService;
 use TheNoFrameworkPetstore\Presentation\StoreOrderJsonSerialized;
@@ -94,4 +95,4 @@ final class StoreOrderController implements RequestHandlerInterface
 
 }
 
-ApplicationWrapper::run(StoreOrderController::class);
+ApplicationWrapper::run(StoreOrderController::class, [AuthMiddleware::class]);

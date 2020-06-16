@@ -7,6 +7,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TheNoFramework\ApplicationWrapper;
+use TheNoFrameworkPetstore\Application\AuthMiddleware;
 use TheNoFrameworkPetstore\Application\HttpException;
 use TheNoFrameworkPetstore\Domain\PetService;
 use TheNoFrameworkPetstore\Presentation\PetJsonSerialized;
@@ -119,4 +120,4 @@ final class PetController implements RequestHandlerInterface
 
 }
 
-ApplicationWrapper::run(PetController::class);
+ApplicationWrapper::run(PetController::class, [AuthMiddleware::class]);
