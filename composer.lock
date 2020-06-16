@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/iyaki/TheNoFramework.git",
-                "reference": "9671a08618104882826854f7c5a15e4fffe7e3fb"
+                "reference": "7e526c24902322b3d948ed21533bd97d77f104c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/iyaki/TheNoFramework/zipball/9671a08618104882826854f7c5a15e4fffe7e3fb",
-                "reference": "9671a08618104882826854f7c5a15e4fffe7e3fb",
+                "url": "https://api.github.com/repos/iyaki/TheNoFramework/zipball/7e526c24902322b3d948ed21533bd97d77f104c0",
+                "reference": "7e526c24902322b3d948ed21533bd97d77f104c0",
                 "shasum": ""
             },
             "require": {
@@ -54,7 +54,7 @@
                 "psr-7",
                 "the-no-framework"
             ],
-            "time": "2020-05-12T23:43:35+00:00"
+            "time": "2020-06-16T02:22:30+00:00"
         },
         {
             "name": "laminas/laminas-diactoros",
