@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "73bf8174fc1eb0971f8b9657c4dcda20",
+    "content-hash": "2db6415d10bab73aecf4b114666f30db",
     "packages": [
         {
             "name": "iyaki/the-no-framework",
-            "version": "dev-master",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/iyaki/TheNoFramework.git",
-                "reference": "4f2afa4bd66a2792d9bdc3f29054297d5b241836"
+                "reference": "3f303ebf43a23d9e8bbbbdafa78ab78333478f15"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/iyaki/TheNoFramework/zipball/4f2afa4bd66a2792d9bdc3f29054297d5b241836",
-                "reference": "4f2afa4bd66a2792d9bdc3f29054297d5b241836",
+                "url": "https://api.github.com/repos/iyaki/TheNoFramework/zipball/3f303ebf43a23d9e8bbbbdafa78ab78333478f15",
+                "reference": "3f303ebf43a23d9e8bbbbdafa78ab78333478f15",
                 "shasum": ""
             },
             "require": {
@@ -54,7 +54,7 @@
                 "psr-7",
                 "the-no-framework"
             ],
-            "time": "2020-07-12T16:58:36+00:00"
+            "time": "2020-07-12T18:41:12+00:00"
         },
         {
             "name": "laminas/laminas-diactoros",
@@ -2576,9 +2576,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "iyaki/the-no-framework": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
