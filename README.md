@@ -5,6 +5,7 @@ Example implementation of a simplified petstore rest api with [TheNoFramework](h
 ```shell
 git clone git@github.com:iyaki/TheNoFramework-petstore-example.git && cd TheNoFramework-petstore-example
 composer install
+chmod 776 storage
 docker-compose up -d
 ```
 TheNoFramework doesn't implements a router system so all the routing of this app is done by nginx.
