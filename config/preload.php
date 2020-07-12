@@ -27,13 +27,11 @@
 
 $autoload = require __DIR__.'/../vendor/autoload.php';
 
-(function () use ($autoload) {
-    $classesToPreload = [
-        'TheNoFramework\ApplicationWrapper',
-        'Psr\Http\Server\RequestHandlerInterface',
-    ];
+$classesToPreload = [
+    'TheNoFramework\ApplicationWrapper',
+    'Psr\Http\Server\RequestHandlerInterface',
+];
 
-    foreach ($classesToPreload as $classToPreload) {
-        require $autoload->findFile($classToPreload);
-    }
-})();
+foreach ($classesToPreload as $classToPreload) {
+    require $autoload->findFile($classToPreload);
+}
