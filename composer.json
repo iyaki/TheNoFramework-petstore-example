@@ -6,32 +6,37 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.4",
-        "iyaki/the-no-framework": "^1.0.0",
-        "laminas/laminas-diactoros": "^2.3",
-        "league/container": "^3.3",
-        "psr/http-message": "^1.0",
+        "php": "^8.4",
+        "iyaki/the-no-framework": "^2.0",
+        "laminas/laminas-diactoros": "^3.5",
+        "league/container": "^4.2",
+        "psr/http-message": "^2.0",
         "psr/http-server-handler": "^1.0",
         "psr/http-server-middleware": "^1.0"
-    },
-    "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.16"
     },
     "autoload": {
         "psr-4": {
             "TheNoFrameworkPetstore\\": "src"
         }
     },
-    "autoload-dev": {
-        "psr-4": {
-            "TheNoFrameworkPetstore\\": "tests"
-        }
-    },
     "scripts": {
-        "check-style": "php-cs-fixer fix --dry-run --diff",
-        "fix-style": "php-cs-fixer fix --diff"
+        "static-analysis": "phpstan analyse --level max config public src",
+        "style-check": "ecs",
+        "style-fix": "ecs --fix",
+        "test": "phpunit tests"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        }
+    },
+    "require-dev": {
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-deprecation-rules": "^2.0",
+        "phpstan/phpstan-strict-rules": "^2.0",
+        "rector/rector": "^2.0",
+        "symplify/easy-coding-standard": "^12.5"
     }
 }
