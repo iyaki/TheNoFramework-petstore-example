@@ -32,7 +32,7 @@ final class PetController implements RequestHandlerInterface
                 return $this->put($request);
             case 'DELETE':
                 return $this->delete($request);
-            }
+        }
         return (new Response())->withStatus(405, 'Method not allowed');
     }
 
@@ -41,26 +41,26 @@ final class PetController implements RequestHandlerInterface
         $searchSegment = explode('/', $request->getUri()->getPath())[2] ?? null;
         $response = new Response();
         try {
-            if (!is_numeric($searchSegment) && 'findByStatus' !== $searchSegment) {
+            if (! is_numeric($searchSegment) && $searchSegment !== 'findByStatus') {
                 throw new HttpException('Invalid Request', 400);
             }
             if (is_numeric($searchSegment)) {
                 $pet = $this->petService->find((int) $searchSegment);
-                if (null === $pet) {
+                if ($pet === null) {
                     throw new HttpException('Pet not found', 404);
                 }
                 $response->getBody()->write((string) new PetJsonSerialized($pet));
             }
-            if ('findByStatus' === $searchSegment) {
+            if ($searchSegment === 'findByStatus') {
                 $status = $request->getQueryParams()['status'] ?? null;
-                if (null === $status) {
+                if ($status === null) {
                     throw new HttpException('Invalid Request', 400);
                 }
                 $pets = $this->petService->findBy(null, $status);
                 $response->getBody()->write((string) new PetJsonSerialized($pets));
             }
         } catch (HttpException $exception) {
-            $response = $response->withStatus(0 === $exception->getCode() ? 500 : $exception->getCode());
+            $response = $response->withStatus($exception->getCode() === 0 ? 500 : $exception->getCode());
             $response->getBody()->write($exception->getMessage());
         }
         return $response;
@@ -102,7 +102,7 @@ final class PetController implements RequestHandlerInterface
         $searchSegment = explode('/', $request->getUri()->getPath())[2] ?? null;
         $response = new Response();
         try {
-            if (!is_numeric($searchSegment)) {
+            if (! is_numeric($searchSegment)) {
                 throw new HttpException('Invalid Request', 400);
             }
             try {
@@ -112,12 +112,11 @@ final class PetController implements RequestHandlerInterface
             }
 
         } catch (HttpException $exception) {
-            $response = $response->withStatus(0 === $exception->getCode() ? 500 : $exception->getCode());
+            $response = $response->withStatus($exception->getCode() === 0 ? 500 : $exception->getCode());
             $response->getBody()->write($exception->getMessage());
         }
         return $response;
     }
-
 }
 
 ApplicationWrapper::run(PetController::class, [AuthMiddleware::class]);

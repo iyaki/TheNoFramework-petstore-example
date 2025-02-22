@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TheNoFrameworkPetstore\Domain;
 
@@ -24,10 +24,10 @@ final class StoreOrderService
     public function create(int $petId, \DateTimeImmutable $shipDate): StoreOrder
     {
         $pet = $this->petService->find($petId);
-        if (null === $pet) {
+        if ($pet === null) {
             throw new \Exception("The pet with id: {$petId} does not exist");
         }
-        if (Pet::STATUS_AVAILABLE !== $pet->getStatus()) {
+        if ($pet->getStatus() !== Pet::STATUS_AVAILABLE) {
             throw new \Exception("The pet with id: {$petId} is not avilable");
         }
         if (new \DateTimeImmutable() > $shipDate) {
@@ -42,7 +42,7 @@ final class StoreOrderService
     public function remove(int $id): void
     {
         $storeOrder = $this->storeOrderRepository->find($id);
-        if (null === $storeOrder) {
+        if ($storeOrder === null) {
             throw new \Exception('Order does not exist');
         }
         $pet = $this->petService->find($storeOrder->getPetId());

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TheNoFrameworkPetstore\Presentation;
 
@@ -12,7 +12,7 @@ final class PetJsonSerialized
 
     public function __construct($pets)
     {
-        if (!is_array($pets)) {
+        if (! is_array($pets)) {
             $pets = [$pets];
         }
         $this->data = json_encode(

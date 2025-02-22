@@ -30,7 +30,7 @@ final class StoreOrderController implements RequestHandlerInterface
                 return $this->post($request);
             case 'DELETE':
                 return $this->delete($request);
-            }
+        }
         return (new Response())->withStatus(405, 'Method not allowed');
     }
 
@@ -39,16 +39,16 @@ final class StoreOrderController implements RequestHandlerInterface
         $id = explode('/', $request->getUri()->getPath())[3] ?? null;
         $response = new Response();
         try {
-            if (!is_numeric($id)) {
+            if (! is_numeric($id)) {
                 throw new HttpException('Invalid Request', 400);
             }
             $order = $this->storeOrderService->find((int) $id);
-            if (null === $order) {
+            if ($order === null) {
                 throw new HttpException('Order not found', 404);
             }
             $response->getBody()->write((string) new StoreOrderJsonSerialized($order));
         } catch (HttpException $exception) {
-            $response = $response->withStatus(0 === $exception->getCode() ? 500 : $exception->getCode());
+            $response = $response->withStatus($exception->getCode() === 0 ? 500 : $exception->getCode());
             $response->getBody()->write($exception->getMessage());
         }
 
@@ -77,7 +77,7 @@ final class StoreOrderController implements RequestHandlerInterface
         $id = explode('/', $request->getUri()->getPath())[3] ?? null;
         $response = new Response();
         try {
-            if (!is_numeric($id)) {
+            if (! is_numeric($id)) {
                 throw new HttpException('Invalid Request', 400);
             }
             try {
@@ -87,12 +87,11 @@ final class StoreOrderController implements RequestHandlerInterface
             }
 
         } catch (HttpException $exception) {
-            $response = $response->withStatus(0 === $exception->getCode() ? 500 : $exception->getCode());
+            $response = $response->withStatus($exception->getCode() === 0 ? 500 : $exception->getCode());
             $response->getBody()->write($exception->getMessage());
         }
         return $response;
     }
-
 }
 
 ApplicationWrapper::run(StoreOrderController::class, [AuthMiddleware::class]);
