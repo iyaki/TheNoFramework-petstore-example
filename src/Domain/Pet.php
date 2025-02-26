@@ -6,21 +6,17 @@ namespace TheNoFrameworkPetstore\Domain;
 
 final class Pet
 {
-    public const STATUS_AVAILABLE = 'available';
+    public const string STATUS_AVAILABLE = 'available';
 
-    public const STATUS_SOLD = 'sold';
+    public const string STATUS_SOLD = 'sold';
 
-    private int $id;
+    private readonly int $id;
 
-    private string $name;
+    private string $status = self::STATUS_AVAILABLE;
 
-    private string $status;
-
-    public function __construct(string $name)
+    public function __construct(private string $name)
     {
         $this->id = time();
-        $this->name = $name;
-        $this->status = self::STATUS_AVAILABLE;
     }
 
     public function getId(): int

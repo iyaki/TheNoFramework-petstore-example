@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use TheNoFrameworkPetstore\Domain\StoreOrder;
 use Laminas\Diactoros\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -12,26 +13,20 @@ use TheNoFrameworkPetstore\Application\HttpException;
 use TheNoFrameworkPetstore\Domain\StoreOrderService;
 use TheNoFrameworkPetstore\Presentation\StoreOrderJsonSerialized;
 
-final class StoreOrderController implements RequestHandlerInterface
+final readonly class StoreOrderController implements RequestHandlerInterface
 {
-    private StoreOrderService $storeOrderService;
-
-    public function __construct(StoreOrderService $storeOrderService)
+    public function __construct(private StoreOrderService $storeOrderService)
     {
-        $this->storeOrderService = $storeOrderService;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        switch (strtoupper($request->getMethod())) {
-            case 'GET':
-                return $this->get($request);
-            case 'POST':
-                return $this->post($request);
-            case 'DELETE':
-                return $this->delete($request);
-        }
-        return (new Response())->withStatus(405, 'Method not allowed');
+        return match (strtoupper($request->getMethod())) {
+            'GET' => $this->get($request),
+            'POST' => $this->post($request),
+            'DELETE' => $this->delete($request),
+            default => (new Response())->withStatus(405, 'Method not allowed'),
+        };
     }
 
     private function get(ServerRequestInterface $request): ResponseInterface
@@ -42,14 +37,16 @@ final class StoreOrderController implements RequestHandlerInterface
             if (! is_numeric($id)) {
                 throw new HttpException('Invalid Request', 400);
             }
+
             $order = $this->storeOrderService->find((int) $id);
-            if ($order === null) {
+            if (!$order instanceof StoreOrder) {
                 throw new HttpException('Order not found', 404);
             }
+
             $response->getBody()->write((string) new StoreOrderJsonSerialized($order));
-        } catch (HttpException $exception) {
-            $response = $response->withStatus($exception->getCode() === 0 ? 500 : $exception->getCode());
-            $response->getBody()->write($exception->getMessage());
+        } catch (HttpException $httpException) {
+            $response = $response->withStatus($httpException->getCode() === 0 ? 500 : $httpException->getCode());
+            $response->getBody()->write($httpException->getMessage());
         }
 
         return $response;
@@ -62,13 +59,14 @@ final class StoreOrderController implements RequestHandlerInterface
         try {
             $newOrder = $this->storeOrderService->create(
                 $requestBody->petId,
-                new \DateTimeImmutable($requestBody->shipDate)
+                new DateTimeImmutable($requestBody->shipDate)
             );
             $response->getBody()->write((string) new StoreOrderJsonSerialized($newOrder));
-        } catch (\Exception $exception) {
-            $response = $response->withStatus('400');
+        } catch (Exception $exception) {
+            $response = $response->withStatus(400);
             $response->getBody()->write($exception->getMessage());
         }
+
         return $response;
     }
 
@@ -80,16 +78,18 @@ final class StoreOrderController implements RequestHandlerInterface
             if (! is_numeric($id)) {
                 throw new HttpException('Invalid Request', 400);
             }
+
             try {
                 $this->storeOrderService->remove((int) $id);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 throw new HttpException($e->getMessage(), 404);
             }
 
-        } catch (HttpException $exception) {
-            $response = $response->withStatus($exception->getCode() === 0 ? 500 : $exception->getCode());
-            $response->getBody()->write($exception->getMessage());
+        } catch (HttpException $httpException) {
+            $response = $response->withStatus($httpException->getCode() === 0 ? 500 : $httpException->getCode());
+            $response->getBody()->write($httpException->getMessage());
         }
+
         return $response;
     }
 }

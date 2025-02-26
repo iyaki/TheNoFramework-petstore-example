@@ -4,20 +4,16 @@ declare(strict_types=1);
 
 namespace TheNoFrameworkPetstore\Domain;
 
-final class StoreOrder
+use DateTimeImmutable;
+
+final readonly class StoreOrder
 {
     private int $id;
 
-    private int $petId;
-
-    private \DateTimeImmutable $shipDate;
-
     public function __construct(
-        int $petId,
-        \DateTimeImmutable $shipDate
+        private int $petId,
+        private DateTimeImmutable $shipDate
     ) {
-        $this->petId = $petId;
-        $this->shipDate = $shipDate;
         $this->id = time();
     }
 
@@ -31,7 +27,7 @@ final class StoreOrder
         return $this->petId;
     }
 
-    public function getShipDate(): \DateTimeImmutable
+    public function getShipDate(): DateTimeImmutable
     {
         return $this->shipDate;
     }

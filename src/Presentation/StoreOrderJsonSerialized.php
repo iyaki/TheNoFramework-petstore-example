@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace TheNoFrameworkPetstore\Presentation;
 
+use Stringable;
+use DateTimeInterface;
 use TheNoFrameworkPetstore\Domain\StoreOrder;
 
-final class StoreOrderJsonSerialized
+final class StoreOrderJsonSerialized implements Stringable
 {
     private $data;
 
@@ -15,6 +17,7 @@ final class StoreOrderJsonSerialized
         if (! is_array($orders)) {
             $orders = [$orders];
         }
+
         $this->data = json_encode(
             array_map(
                 [$this, 'serializePet'],
@@ -23,9 +26,9 @@ final class StoreOrderJsonSerialized
         );
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->data;
+        return (string) $this->data;
     }
 
     private function serializePet(StoreOrder $pet)
@@ -33,7 +36,7 @@ final class StoreOrderJsonSerialized
         return [
             'id' => $pet->getId(),
             'petId' => $pet->getPetId(),
-            'shipDate' => $pet->getShipDate()->format(\DateTimeInterface::ATOM),
+            'shipDate' => $pet->getShipDate()->format(DateTimeInterface::ATOM),
         ];
     }
 }
