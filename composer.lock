@@ -222,16 +222,16 @@
         },
         {
             "name": "league/container",
-            "version": "5.0.1",
+            "version": "5.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/container.git",
-                "reference": "65fce07081969321195290d9439535e010588b4b"
+                "reference": "041c52d266763887fff2256fb5dc9392d808f8f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/container/zipball/65fce07081969321195290d9439535e010588b4b",
-                "reference": "65fce07081969321195290d9439535e010588b4b",
+                "url": "https://api.github.com/repos/thephpleague/container/zipball/041c52d266763887fff2256fb5dc9392d808f8f3",
+                "reference": "041c52d266763887fff2256fb5dc9392d808f8f3",
                 "shasum": ""
             },
             "require": {
@@ -247,8 +247,8 @@
             "require-dev": {
                 "nette/php-generator": "^4.1",
                 "nikic/php-parser": "^5.0",
-                "phpstan/phpstan": "^1.10.61",
-                "phpunit/phpunit": "^10.5.45|^11.5.15",
+                "phpstan/phpstan": "^2.1.11",
+                "phpunit/phpunit": "^10.5.45|^11.5.15|^12.0",
                 "roave/security-advisories": "dev-latest",
                 "scrutinizer/ocular": "^1.9",
                 "squizlabs/php_codesniffer": "^3.9"
@@ -293,7 +293,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/container/issues",
-                "source": "https://github.com/thephpleague/container/tree/5.0.1"
+                "source": "https://github.com/thephpleague/container/tree/5.1.0"
             },
             "funding": [
                 {
@@ -301,7 +301,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-03-27T09:31:16+00:00"
+            "time": "2025-05-28T07:37:56+00:00"
         },
         {
             "name": "psr/container",
